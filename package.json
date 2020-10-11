@@ -1,9 +1,13 @@
 {
-  "name": "xg-version",
+  "name": "@xgfe/xg-version",
   "bin": "bin/xg-version.js",
   "version": "1.0.0",
   "description": "Quickly implement version number modification and perform git commit and push operations",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@git.sankuai.com/~chenlei65/xg-version.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,3 +20,4 @@
     "inquirer-fuzzy-path": "^2.3.0"
   }
 }
+

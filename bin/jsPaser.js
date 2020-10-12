@@ -22,8 +22,8 @@ let jsProps = async function(url,ver,callback) {
       index = tmp.indexOf('appVersion');
     // 拆分key、value
     if (index != -1) {
-      console.log('筛选出来的版本号')
-      console.log(tmp)
+      // console.log('筛选出来的版本号')
+      // console.log(tmp)
       let endIdx  = tmp.indexOf(';')
 
       let strIdx = tmp.indexOf('\''),

@@ -55,9 +55,10 @@ function switchSrc(type) {
       } )
   }else {
     // 调试时候暂时关闭
-    this.src = process.cwd()
+    this.src = process.cwd().split('/hybrid')[0]
     inputVersion()
   }
+//  /Users/chenlei/Desktop/code/work/xgfe-wms
 
 
 // switch (type) {
@@ -101,7 +102,7 @@ function inputVersion() {
       files.forEach((item)=>{
         let path = this.src + '/'+ item
         FS.stat(path,async function (err,status) {
-          console.log('======StatusIsFile======')
+          // console.log('======StatusIsFile======')
           if(err) return err
           let isFile = status.isFile()
           let isDir  = status.isDirectory()
@@ -111,7 +112,7 @@ function inputVersion() {
               case 0:
                 let file1 = FS.readFileSync(path,'utf-8')
                 let file1_json = JSON.parse(file1)
-                console.log(file1_json.version)
+                // console.log(file1_json.version)
                 //执行替换操作
                 // console.log(ver)
                 replaceFile(path,'"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
@@ -122,7 +123,7 @@ function inputVersion() {
                 // let file2_json = JSON.parse(file2)
                 // console.log(file1_json.version)
 
-                console.log('============获取prop中接口===========')
+                // console.log('============获取prop中接口===========')
                 propertiesPaser(path,ver,getProperValue).then(res=>{
                 })
                 break;
@@ -137,8 +138,8 @@ function inputVersion() {
             // //修改src目录下文件
             path = path.substring(0,path.length - 3) + versionName[2]
 
-              console.log('paaaaath')
-              console.log(path)
+              // console.log('paaaaath')
+              // console.log(path)
             jsPaser(path,ver,mainCallBack)
             // changeProper(path,ver,)
               // replaceFile(path+'/','"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
@@ -148,12 +149,12 @@ function inputVersion() {
             //
             // }
           }
-          console.log(item)
-          console.log(isFile)
+          // console.log(item)
+          // console.log(isFile)
         })
       })
-      console.log(this.src)
-      console.log(files)
+      // console.log(this.src)
+      // console.log(files)
     }
   })
 
@@ -164,7 +165,7 @@ function inputVersion() {
 
 //替换函数
 let replaceFile = function(filePath,sourceRegx,targetStr) {
-  console.log('正在执行替换'+filePath+sourceRegx+targetStr)
+  console.log('正在执行替换'+filePath+'。旧版本：'+sourceRegx+'，新版本：'+targetStr)
   FS.readFile(filePath, function (err, data) {
     if (err) {
       return err;
@@ -172,7 +173,7 @@ let replaceFile = function(filePath,sourceRegx,targetStr) {
     let str = data.toString();
     str = str.replace(sourceRegx, targetStr);
 
-    console.log(filePath,sourceRegx,targetStr)
+    // console.log(filePath,sourceRegx,targetStr)
     FS.writeFile(filePath, str, function (err) {
       if (err) return err;
     });
@@ -189,7 +190,7 @@ let changeProper = function(path,ver,value) {
 
 //解析proper
 let getProperValue = function (path,ver,res) {
-  console.log(res['sonar.projectVersion'])
+  // console.log(res['sonar.projectVersion'])
   if (res['sonar.projectVersion'] != undefined){
     specialVersion = res['sonar.projectVersion']
     changeProper(path,ver,res['sonar.projectVersion'])
@@ -199,8 +200,8 @@ let getProperValue = function (path,ver,res) {
 
 //解析main.js的回调函数
 let mainCallBack = function (path,ver,res) {
-  console.log('=======解析main.js=====')
-console.log(path,ver,res)
+  // console.log('=======解析main.js=====')
+// console.log(path,ver,res)
   changeProper(path,ver,res)
 }
 

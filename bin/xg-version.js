@@ -141,7 +141,7 @@ function git(code){
   return new Promise((resolve => {
     // shell.exec(code)
     shell.exec(code,function() {
-      console.log(code)
+      console.log('\x1B[36m%s\x1B[0m',code)
       resolve()
     })
   }))

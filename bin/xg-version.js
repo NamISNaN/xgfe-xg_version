@@ -140,8 +140,8 @@ let gitOpreat = async function(){
 function git(code){
   return new Promise((resolve => {
     // shell.exec(code)
+    console.log('\x1B[36m%s\x1B[0m',code)
     shell.exec(code,function() {
-      console.log('\x1B[36m%s\x1B[0m',code)
       resolve()
     })
   }))

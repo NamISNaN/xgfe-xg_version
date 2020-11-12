@@ -111,14 +111,18 @@ let gitOpreat = async function(){
     })
   if (flag){
     //本地没有release分支
-    await git(`git fetch origin ${global.releaseName}`)
-    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
-    await git('git checkout master')
-    await git ('git pull origin master')
-    await git(`git merge ${global.releaseName}`)
-    await git('git push origin master')
-    await git(`git tag -a v${global.releaseName} -m 'v${global.releaseName}'`)
-    await git(`git push origin v${global.releaseName}:v${global.releaseName}  `)
+    await git('git add .')
+    await git("git commit -m '异步提交'")
+    await git('git checkout -b test')
+    await git('git push origin test:test')
+    // await git(`git fetch origin ${global.releaseName}`)
+    // await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
+    // await git('git checkout master')
+    // await git ('git pull origin master')
+    // await git(`git merge ${global.releaseName}`)
+    // await git('git push origin master')
+    // await git(`git tag -a v${global.releaseName} -m 'v${global.releaseName}'`)
+    // await git(`git push origin v${global.releaseName}:v${global.releaseName}  `)
   }else {
     // 本地已有release分支
     await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
@@ -138,7 +142,7 @@ let gitOpreat = async function(){
 function git(code){
   return new Promise((resolve => {
     // shell.exec(code)
-    shell.exec("git commit -m '测试异步shell执行'",function() {
+    shell.exec(code,function() {
       console.log(code)
       resolve()
     })

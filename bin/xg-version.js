@@ -110,12 +110,9 @@ let gitOpreat = async function(){
      res.release===0?flag=false:flag=true
     })
   if (!flag){
-    //本地有release分支
-    // await git('git add .')
-    // await git("git commit -m '异步提交'")
-    // await git('git checkout -b test')
-    // await git('git push origin test:test')
+    //本地没有release分支
     await git(`git fetch origin ${global.releaseName}`)
+    await git('git add .')
     await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
     await git('git checkout master')
     await git ('git pull origin master')
@@ -124,8 +121,9 @@ let gitOpreat = async function(){
     await git(`git tag -a v${global.releaseName} -m 'v${global.releaseName}'`)
     await git(`git push origin v${global.releaseName}:v${global.releaseName}  `)
   }else {
-    // 本地没有release分支
-    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
+    // 本地有release分支
+    await git('git add .')
+    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
     await git(`git checkout ${global.releaseName}`)
     await git(`git pull origin ${global.releaseName} `)
     await git('git checkout master')

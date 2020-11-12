@@ -2,20 +2,23 @@
 
 // import {promptList,promptList2,promptList3} from "./option";
 require('../lib/change.js')
-const promptList = require('./option').promptList
-const promptList2 = require('./option').promptList2
-const promptList3 = require('./option').promptList3
+// const promptList = require('./option').promptList
+// const promptList2 = require('./option').promptList2
+// const promptList3 = require('./option').promptList3
+const {promptList,promptList2,promptList3,promptList4,promptList5} = require('./option')
 const FS = require('fs');
 const commander = require('commander')
 const inquirer = require('inquirer');
 const propertiesPaser = require('./propertiesPaser').parseProps
 const jsPaser = require('./jsPaser').jsProps
+const shell = require('shelljs')
 // src = '/Users/chenlei/Desktop/code/work/xgfe-admin/node_test'
 src = ''
 //需要修改的文件
 versionName = ['package.json','sonar-project.properties','src/app/main.js']
 changeFunctionName = []
 specialVersion = ''
+let releaseName=''
 
 
 //版本号 等基础信息描述
@@ -51,12 +54,13 @@ function switchSrc(type) {
       .prompt(promptList2)
       .then(answer => {
         this.src = answer.src
-        inputVersion()
+        inputRelease()
       } )
   }else {
-    // 调试时候暂时关闭
+    // shell.exec('git')
+    // 调试时候暂时关闭 下面两行
     this.src = process.cwd().split('/hybrid')[0]
-    inputVersion()
+    inputRelease()
   }
 //  /Users/chenlei/Desktop/code/work/xgfe-wms
 
@@ -88,15 +92,73 @@ function inputVersion() {
   inquirer
     .prompt(promptList3)
     .then(answer => {
-      changeVersion(answer)
-      console.log(answer)
+      global.version = answer
+      changeVersion(global.version).then(()=>{
+        console.log('将路径'+this.src+'下的版本号修改：' + global.version.version+'，准备执行封板操作')
+        gitOpreat()
+      })
+    } )
+}
+//操作git分支
+let gitOpreat = async function(){
+// async function gitOpreat() {
+  //本地是否有release-xxxx 分支 没有的话 新建一个
+  let flag = true
+  await inquirer
+    .prompt(promptList4)
+    .then(res=>{
+     res.release===0?flag=false:flag=true
+    })
+  if (flag){
+    //本地没有release分支
+    await git(`git fetch origin ${global.releaseName}`)
+    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
+    await git('git checkout master')
+    await git ('git pull origin master')
+    await git(`git merge ${global.releaseName}`)
+    await git('git push origin master')
+    await git(`git tag -a v${global.releaseName} -m 'v${global.releaseName}'`)
+    await git(`git push origin v${global.releaseName}:v${global.releaseName}  `)
+  }else {
+    // 本地已有release分支
+    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
+    await git(`git checkout ${global.releaseName}`)
+    await git(`git pull origin ${global.releaseName} `)
+    await git('git checkout master')
+    await git ('git pull origin master')
+    await git(`git merge ${global.releaseName}`)
+    await git('git push origin master')
+    await git(`git tag -a v${global.version.version} -m 'v${global.version.version}'`)
+    await git(`git push origin v${global.version.version}:v${global.version.version}  `)
+  }
+  // shell.exec('git')
+
+}
+
+function git(code){
+  return new Promise((resolve => {
+    // shell.exec(code)
+    shell.exec("git commit -m '测试异步shell执行'",function() {
+      console.log(code)
+      resolve()
+    })
+  }))
+}
+
+//获取release分支名称
+function inputRelease() {
+  inquirer
+    .prompt(promptList5)
+    .then(answer => {
+      global.releaseName = answer.releaseBranch
+      inputVersion()
     } )
 }
 
-
- function changeVersion(ver) {
+const changeVersion = async function(ver) {
+ // function changeVersion(ver) {
   // let fd = fs.openSync(this.src + 'main.js','w')
-   FS.readdir(this.src,function (err,files) {
+   await FS.readdir(this.src,function (err,files) {
     if(err) return err
     if(files.length!=0){
       files.forEach((item)=>{
@@ -157,15 +219,10 @@ function inputVersion() {
       // console.log(files)
     }
   })
-
-
-
-    console.log('将路径'+this.src+'下的版本号修改：' + ver.version)
 }
 
 //替换函数
 let replaceFile = function(filePath,sourceRegx,targetStr) {
-  console.log('正在执行替换'+filePath+'。旧版本：'+sourceRegx+'，新版本：'+targetStr)
   FS.readFile(filePath, function (err, data) {
     if (err) {
       return err;

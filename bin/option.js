@@ -49,8 +49,43 @@ const promptList3 = [{
 
 
 
+const promptList4 = [
+  {
+    type: 'list',
+    message: '本地是否已经有release分支:',
+    name: 'release',
+    choices: [
+      {
+        key: 0,
+        name: '还未创建',
+        value: 0
+      },
+      {
+        key: 1,
+        name: '已经创建',
+        value: 1
+      }
+    ],
+  }
+]
+
+//输入release分支名称
+const promptList5 = [{
+  type: 'input',
+  message: '请输入release分支名称（如：release-1117）:',
+  name: 'releaseBranch'
+}]
+
+
 // export {promptList,promptList2,promptList3}
 // module.exports = {promptList,promptList2,promptList3}
-exports.promptList = promptList
-exports.promptList2 =promptList2
-exports.promptList3 = promptList3
+// exports.promptList = promptList
+// exports.promptList2 =promptList2
+// exports.promptList3 = promptList3
+module.exports = {
+  promptList,
+  promptList2,
+  promptList3,
+  promptList4,
+  promptList5
+}

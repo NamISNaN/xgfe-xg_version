@@ -49,42 +49,18 @@ inquirer
 
 //1.步骤操作，选择目录
 function switchSrc(type) {
-  if (type =='input' ){
+  if (type == 'input') {
     inquirer
       .prompt(promptList2)
       .then(answer => {
         this.src = answer.src
         inputRelease()
-      } )
-  }else {
-    // shell.exec('git')
-    // 调试时候暂时关闭 下面两行
+      })
+  } else {
+    // 调试时候暂时注视下面两行
     this.src = process.cwd().split('/hybrid')[0]
     inputRelease()
   }
-//  /Users/chenlei/Desktop/code/work/xgfe-wms
-
-
-// switch (type) {
-//   case 'input':
-//     // 手动输入版本号
-//     inquirer
-//       .prompt(promptList2)
-//       .then(answer => {
-//         changeVersion(answer)
-//         console.log(answer)
-//       } )
-//     break;
-//   case 'default':
-//     // 当前目录
-//     inquirer
-//       .prompt(promptList3)
-//       .then(answer => {
-//         changeVersion(answer)
-//         console.log(answer)
-//       } )
-//     break;
-// }
 }
 
 //输入版本号函数
@@ -101,7 +77,6 @@ function inputVersion() {
 }
 //操作git分支
 let gitOpreat = async function(){
-// async function gitOpreat() {
   //本地是否有release-xxxx 分支 没有的话 新建一个
   let flag = true
   await inquirer
@@ -141,9 +116,10 @@ function git(code){
   return new Promise((resolve => {
     // shell.exec(code)
     console.log('\x1B[36m%s\x1B[0m',code)
-    shell.exec(code,function() {
+    let str = shell.exec(code,function() {
       resolve()
     })
+    console.log(    str.stderr)
   }))
 }
 
@@ -158,15 +134,12 @@ function inputRelease() {
 }
 
 const changeVersion = async function(ver) {
- // function changeVersion(ver) {
-  // let fd = fs.openSync(this.src + 'main.js','w')
    await FS.readdir(this.src,function (err,files) {
     if(err) return err
     if(files.length!=0){
       files.forEach((item)=>{
         let path = this.src + '/'+ item
         FS.stat(path,async function (err,status) {
-          // console.log('======StatusIsFile======')
           if(err) return err
           let isFile = status.isFile()
           let isDir  = status.isDirectory()
@@ -176,17 +149,11 @@ const changeVersion = async function(ver) {
               case 0:
                 let file1 = FS.readFileSync(path,'utf-8')
                 let file1_json = JSON.parse(file1)
-                // console.log(file1_json.version)
                 //执行替换操作
-                // console.log(ver)
                 replaceFile(path,'"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
                 break;
                 //修改 sonar-project.properties
               case 1:
-                // let file2 = FS.readFileSync(path,'utf-8')
-                // let file2_json = JSON.parse(file2)
-                // console.log(file1_json.version)
-
                 // console.log('============获取prop中接口===========')
                 propertiesPaser(path,ver,getProperValue).then(res=>{
                 })
@@ -197,13 +164,8 @@ const changeVersion = async function(ver) {
             }
           }
           if (isDir&&item==versionName[2].split('/')[0]){
-
-            // console.log(path)
             // //修改src目录下文件
             path = path.substring(0,path.length - 3) + versionName[2]
-
-              // console.log('paaaaath')
-              // console.log(path)
             jsPaser(path,ver,mainCallBack)
             // changeProper(path,ver,)
               // replaceFile(path+'/','"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
@@ -213,12 +175,8 @@ const changeVersion = async function(ver) {
             //
             // }
           }
-          // console.log(item)
-          // console.log(isFile)
         })
       })
-      // console.log(this.src)
-      // console.log(files)
     }
   })
 }
@@ -232,7 +190,6 @@ let replaceFile = function(filePath,sourceRegx,targetStr) {
     let str = data.toString();
     str = str.replace(sourceRegx, targetStr);
 
-    // console.log(filePath,sourceRegx,targetStr)
     FS.writeFile(filePath, str, function (err) {
       if (err) return err;
     });
@@ -249,7 +206,6 @@ let changeProper = function(path,ver,value) {
 
 //解析proper
 let getProperValue = function (path,ver,res) {
-  // console.log(res['sonar.projectVersion'])
   if (res['sonar.projectVersion'] != undefined){
     specialVersion = res['sonar.projectVersion']
     changeProper(path,ver,res['sonar.projectVersion'])
@@ -259,9 +215,6 @@ let getProperValue = function (path,ver,res) {
 
 //解析main.js的回调函数
 let mainCallBack = function (path,ver,res) {
-  // console.log('=======解析main.js=====')
-// console.log(path,ver,res)
   changeProper(path,ver,res)
 }
 
-// console.log('hello', process.argv)

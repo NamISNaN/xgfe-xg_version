@@ -86,15 +86,15 @@ let gitOpreat = async function(){
     })
   if (!flag){
     //本地没有release分支
-    await git(`git fetch origin ${global.releaseName}`)
+    await git(`git fetch origin ${global.releaseName}:${global.releaseName}`)
     await git('git add .')
-    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交")
+    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
     await git('git checkout master')
     await git ('git pull origin master')
     await git(`git merge ${global.releaseName}`)
     await git('git push origin master')
-    await git(`git tag -a v${global.releaseName} -m 'v${global.releaseName}'`)
-    await git(`git push origin v${global.releaseName}:v${global.releaseName}  `)
+    await git(`git tag -a v${global.version.version} -m 'v${global.version.version}'`)
+    await git(`git push origin v${global.version.version}:v${global.version.version}  `)
   }else {
     // 本地有release分支
     await git('git add .')
@@ -116,10 +116,10 @@ function git(code){
   return new Promise((resolve => {
     // shell.exec(code)
     console.log('\x1B[36m%s\x1B[0m',code)
-    let str = shell.exec(code,function() {
+   shell.exec(code,function(code, stdout, stderr) {
+     console.error('\x1B[31m%s\x1B[0m',stderr)
       resolve()
     })
-    console.log(    str.stderr)
   }))
 }
 
@@ -154,7 +154,6 @@ const changeVersion = async function(ver) {
                 break;
                 //修改 sonar-project.properties
               case 1:
-                // console.log('============获取prop中接口===========')
                 propertiesPaser(path,ver,getProperValue).then(res=>{
                 })
                 break;

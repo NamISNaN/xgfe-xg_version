@@ -133,7 +133,6 @@ function git(code){
      if (stderr){
          checkError().then(res=>{
            res===0?resolve(stdout):process.exit(1)
-           console.log(res)
          })
        // reject(stderr)
      }else {

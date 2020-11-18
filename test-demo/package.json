@@ -1,0 +1,105 @@
+{
+  "name": "xgfe-admin",
+  "version": "3.5.1",
+  "private": true,
+  "description": "驼峰业务管理后台",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "linter ./src/app/ ",
+    "build-lint": "eslint -c plus/eslint.json --no-eslintrc src/app",
+    "build-wb": "webpack --config webpack.config.js",
+    "start:angular": "xg server restart -p 80 & sleep 2;xg release -wL",
+    "start:vue": "xg server restart -p 80 & sleep 2;xg release -wL & cd hybrid;npm run serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@git.sankuai.com/b2bop/xgfe-admin.git"
+  },
+  "keywords": [
+    "xgfe",
+    "admin"
+  ],
+  "author": "xgfe",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "clean-webpack-plugin": "3.0.0",
+    "cz-emoji-xg": "^1.0.0",
+    "eslint": "^5.0.1",
+    "eslint-plugin-xg-ng": "^0.1.0",
+    "ghooks": "^1.2.4",
+    "html-loader": "0.5.5",
+    "html-webpack-plugin": "3.2.0",
+    "lint-plus": "^0.6.12",
+    "webpack": "4.35.2",
+    "webpack-cli": "3.3.5"
+  },
+  "engines": {
+    "node": ">=6",
+    "npm": ">=5"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "node ./hooks/pre-commit.js",
+      "commit-msg": "node ./hooks/commit-msg.js"
+    },
+    "commitizen": {
+      "path": "node_modules/cz-emoji-xg"
+    },
+    "cz-emoji-xg": {
+      "appends": [
+        {
+          "type": "input",
+          "name": "module",
+          "message": "Input the affected module:"
+        }
+      ]
+    },
+    "commit-permission": [
+      {
+        "subpath": "src/lib",
+        "status": "dmrc",
+        "users": [
+          "杨继园",
+          "荣威威",
+          "路阳"
+        ]
+      },
+      {
+        "subpath": "hybrid/package",
+        "status": "admrc",
+        "users": [
+          "杨继园",
+          "荣威威",
+          "路阳",
+          "黄丽芬",
+          "杨帆"
+        ]
+      },
+      {
+        "subpath": "hybrid/src/assets/css",
+        "status": "admrc",
+        "users": [
+          "杨继园",
+          "荣威威",
+          "路阳",
+          "杨帆"
+        ],
+        "ignore-subpath": "hybrid/src/assets/css/app.scss"
+      },
+      {
+        "subpath": "hybrid/tsconfig.json",
+        "status": "admrc",
+        "users": [
+          "杨继园",
+          "荣威威",
+          "路阳"
+        ]
+      }
+    ]
+  },
+  "dependencies": {
+    "@xgfe/waxbill": "0.0.25"
+  }
+}

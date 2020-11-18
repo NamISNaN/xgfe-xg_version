@@ -203,11 +203,11 @@ let replaceFile = function(filePath,sourceRegx,targetStr) {
 //修改 properties和main.js  版本号需要特殊处理
 let changeProper = function(path,ver,value) {
   // if(ver.split('.').length<4){
-  //
+
   // }
   // console.log(ver.version)
-  // let   temp = ver.version.split('.').length < 4 ?  'v' + ver.version + '.0' :  'v' + ver.version
-  let temp = 'v' + ver.version + '.0'
+  let   temp = ver.version.split('.').length < 4 ?  'v' + ver.version + '.0' :  'v' + ver.version
+  // let temp = 'v' + ver.version + '.0'
   // ver.version = 'v' + ver.version + '.0'
   replaceFile(path,value,temp)
 }

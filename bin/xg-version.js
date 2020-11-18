@@ -101,7 +101,7 @@ let gitOpreat = async function(){
     await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
     await git(`git checkout ${global.releaseName}`)
       .catch((err)=>{
-        console.log('这是git毁掉回调的err')
+        console.log('这是git回调的err')
         console.log(err)
         return
       })
@@ -119,7 +119,7 @@ function git(code){
   return new Promise(((resolve,reject) => {
     // shell.exec(code)
     console.log('\x1B[36m%s\x1B[0m',code)
-   shell.exec(code,{fatal:true},function(code, stdout, stderr) {
+   shell.exec(code,function(code, stdout, stderr) {
      console.error('\x1B[31m%s\x1B[0m',stderr)
       resolve(stdout)
       reject(stderr)

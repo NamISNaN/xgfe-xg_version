@@ -100,6 +100,10 @@ let gitOpreat = async function(){
     await git('git add .')
     await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
     await git(`git checkout ${global.releaseName}`)
+      .then((res)=>{
+        console.log('成功回调')
+        console.log(res)
+      })
       .catch((err)=>{
         console.log('这是git回调的err')
         console.log(err)

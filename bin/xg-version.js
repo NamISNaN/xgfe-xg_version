@@ -149,6 +149,9 @@ const changeVersion = async function(ver) {
               case 0:
                 let file1 = FS.readFileSync(path,'utf-8')
                 let file1_json = JSON.parse(file1)
+                if (ver.version.split('.').length > 3) {
+                  break;
+                }
                 //执行替换操作
                 replaceFile(path,'"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
                 break;

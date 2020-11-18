@@ -141,8 +141,9 @@ function git(code){
   )
 }
 
-function checkError(){
-  inquirer
+async function checkError(){
+
+ await  inquirer
     .prompt(promptList6)
     .then(answer => {
       console.log(answer)

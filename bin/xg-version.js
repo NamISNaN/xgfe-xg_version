@@ -150,7 +150,7 @@ const changeVersion = async function(ver) {
                 let file1 = FS.readFileSync(path,'utf-8')
                 let file1_json = JSON.parse(file1)
                 if (ver.version.split('.').length > 3){
-                  verSplice = ver.version.split('.')
+                  var verSplice = ver.version.split('.')
                   verSplice.pop()
                   verSplice = verSplice.join('.')
                 }
@@ -200,8 +200,13 @@ let replaceFile = function(filePath,sourceRegx,targetStr) {
   });
 }
 
-//properties和main.js  版本号需要特殊处理
+//修改 properties和main.js  版本号需要特殊处理
 let changeProper = function(path,ver,value) {
+  // if(ver.split('.').length<4){
+  //
+  // }
+  // console.log(ver.version)
+  // let   temp = ver.version.split('.').length < 4 ?  'v' + ver.version + '.0' :  'v' + ver.version
   let temp = 'v' + ver.version + '.0'
   // ver.version = 'v' + ver.version + '.0'
   replaceFile(path,value,temp)

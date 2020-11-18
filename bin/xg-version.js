@@ -132,6 +132,7 @@ function git(code){
      console.error('\x1B[31m%s\x1B[0m',stderr)
      if (stderr){
          checkError().then(res=>{
+           res===0?resolve(stdout):process.exit(1)
            console.log(res)
          })
        // reject(stderr)

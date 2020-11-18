@@ -131,7 +131,9 @@ function git(code){
    shell.exec(code,{fatal:true},function(code, stdout, stderr) {
      console.error('\x1B[31m%s\x1B[0m',stderr)
      if (stderr){
-       checkError()===0 ? console.log('执行'):console.log('退出')
+         checkError().then(res=>{
+           console.log(res)
+         })
        // reject(stderr)
      }else {
        resolve(stdout)

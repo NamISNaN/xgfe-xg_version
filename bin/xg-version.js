@@ -100,6 +100,11 @@ let gitOpreat = async function(){
     await git('git add .')
     await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
     await git(`git checkout ${global.releaseName}`)
+      .catch((err)=>{
+        console.log('这是git毁掉回调的err')
+        console.log(err)
+        return
+      })
     await git(`git pull origin ${global.releaseName} `)
     await git('git checkout master')
     await git ('git pull origin master')
@@ -111,14 +116,16 @@ let gitOpreat = async function(){
 }
 
 function git(code){
-  return new Promise((resolve => {
+  return new Promise(((resolve,reject) => {
     // shell.exec(code)
     console.log('\x1B[36m%s\x1B[0m',code)
    shell.exec(code,{fatal:true},function(code, stdout, stderr) {
      console.error('\x1B[31m%s\x1B[0m',stderr)
-      resolve()
+      resolve(stdout)
+      reject(stderr)
     })
-  }))
+  })
+  )
 }
 
 //获取release分支名称

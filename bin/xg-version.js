@@ -122,7 +122,7 @@ function git(code){
    shell.exec(code,{fatal:true},function(code, stdout, stderr) {
      console.error('\x1B[31m%s\x1B[0m',stderr)
       resolve(stdout)
-      reject(stderr)
+      reject(new Error(stderr))
     })
   })
   )

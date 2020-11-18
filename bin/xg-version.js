@@ -145,7 +145,8 @@ function checkError(){
   inquirer
     .prompt(promptList6)
     .then(answer => {
-      if (answer.error = 0 ){return true}
+      // console.
+      if (answer.error === 0 ){return true}
       else { process.exit(1)}
     } )
 }

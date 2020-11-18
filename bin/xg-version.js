@@ -131,7 +131,7 @@ function git(code){
    shell.exec(code,{fatal:true},function(code, stdout, stderr) {
      console.error('\x1B[31m%s\x1B[0m',stderr)
      if (stderr){
-       checkError()?resolve(stdout):''
+       checkError()===0 ? console.log('执行'):console.log('退出')
        // reject(stderr)
      }else {
        resolve(stdout)
@@ -146,8 +146,10 @@ function checkError(){
     .prompt(promptList6)
     .then(answer => {
       console.log(answer)
-      if (answer.error === 0 ){return}
-      else { process.exit(1)}
+      return answer.error
+      // if (answer.error === 0 ){
+      //   return
+      // } else { process.exit(1)}
     } )
 }
 

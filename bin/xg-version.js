@@ -99,16 +99,12 @@ let gitOpreat = async function(){
     // 本地有release分支
     await git('git add .')
     await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
-    await git(`git checkout ${global.releaseName}`)
-      .then((res)=>{
-        console.log('成功回调')
-        console.log(res)
-      })
-      .catch((err)=>{
-        console.log('这是git回调的err')
-        console.log(err)
-        process.exit(1)
-      })
+    await git(`git checkout ${global.releaseName}`).catch((err)=>{
+      console.log('这是git回调的err')
+      console.log(err)
+      process.exit(1)
+    })
+
     await git(`git pull origin ${global.releaseName} `)
     await git('git checkout master')
     await git ('git pull origin master')

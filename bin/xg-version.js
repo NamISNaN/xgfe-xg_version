@@ -108,8 +108,6 @@ let gitOpreat = async function(){
     await git(`git tag -a v${global.version.version} -m 'v${global.version.version}'`)
     await git(`git push origin v${global.version.version}:v${global.version.version}  `)
   }
-  // shell.exec('git')
-
 }
 
 function git(code){

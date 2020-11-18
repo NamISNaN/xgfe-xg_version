@@ -102,7 +102,7 @@ let gitOpreat = async function(){
     await git(`git checkout ${global.releaseName}`).catch((err)=>{
       console.log('这是git回调的err')
       console.log(err)
-      process.exit(1)
+      // process.exit(1)
     })
 
     await git(`git pull origin ${global.releaseName} `)

@@ -128,7 +128,6 @@ function git(code){
     // shell.exec(code)
     console.log('\x1B[36m%s\x1B[0m',code)
    shell.exec(code,{fatal:true},function(code, stdout, stderr) {
-     console.log('shell回调函数')
      console.error('\x1B[31m%s\x1B[0m',stderr)
       resolve(stdout)
      if (stderr){

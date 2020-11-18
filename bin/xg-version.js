@@ -131,7 +131,10 @@ function git(code){
      console.log('shell回调函数')
      console.error('\x1B[31m%s\x1B[0m',stderr)
       resolve(stdout)
-      reject(new Error(stderr))
+     if (stderr){
+       throw new Error(stderr)
+     }
+      // reject()
     })
   })
   )

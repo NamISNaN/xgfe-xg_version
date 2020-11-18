@@ -144,16 +144,18 @@ function git(code){
 }
 
 async function checkError(){
-
+ ans = ''
  await  inquirer
     .prompt(promptList6)
     .then(answer => {
       console.log(answer)
+      ans = answer.error
       return answer.error
       // if (answer.error === 0 ){
       //   return
       // } else { process.exit(1)}
     } )
+  return ans
 }
 
 //获取release分支名称

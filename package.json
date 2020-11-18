@@ -1,7 +1,7 @@
 {
   "name": "@xgfe/xg-version",
   "bin": "bin/xg-version.js",
-  "version": "5.5.5",
+  "version": "45.54.2",
   "description": "Quickly implement version number modification and perform git commit and push operations",
   "main": "index.js",
   "repository": {

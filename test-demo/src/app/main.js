@@ -22,7 +22,7 @@ window.basePath = '';
 window.baseUrl = '/assets/';
 window.ver = '${__timestamp__}';
 // 系统版本号
-window.appVersion = 'v3.9.9.0';
+window.appVersion = 'v5.1.2.3';
 // 配置分组cookie
 if (GROUP_PLUS_ENV) {
     let exp = new Date();

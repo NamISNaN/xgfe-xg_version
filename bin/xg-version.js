@@ -153,9 +153,11 @@ const changeVersion = async function(ver) {
                   var verSplice = ver.version.split('.')
                   verSplice.pop()
                   verSplice = verSplice.join('.')
+                  replaceFile(path,'"version": "'+file1_json.version+'"','"version": "'+verSplice+'"')
+                  break;
                 }
                 //执行替换操作
-                replaceFile(path,'"version": "'+file1_json.version+'"','"version": "'+verSplice+'"')
+                replaceFile(path,'"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
                 break;
                 //修改 sonar-project.properties
               case 1:

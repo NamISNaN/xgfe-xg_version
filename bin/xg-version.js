@@ -102,6 +102,7 @@ let gitOpreat = async function(){
     await git(`git checkout ${global.releaseName}`)
       .then(res=>{
       console.log('git回调函数函数')
+        console.log(res)
     })
       .catch(err=>{
         console.log('err回调函数函数')
@@ -134,7 +135,6 @@ function git(code){
        console.log('errrrrrr')
        reject(stderr)
      }
-
     })
   })
   )

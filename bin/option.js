@@ -76,6 +76,25 @@ const promptList5 = [{
   name: 'releaseBranch'
 }]
 
+const promptList6 = [
+  {
+    type: 'list',
+    message: '似乎出现了一些问题，清查看上方日志以确定是否需要继续封板:',
+    name: 'error',
+    choices: [
+      {
+        key: 0,
+        name: '继续发布',
+        value: 0
+      },
+      {
+        key: 1,
+        name: '中止发布',
+        value: 1
+      }
+    ],
+  }
+]
 
 // export {promptList,promptList2,promptList3}
 // module.exports = {promptList,promptList2,promptList3}
@@ -87,5 +106,6 @@ module.exports = {
   promptList2,
   promptList3,
   promptList4,
-  promptList5
+  promptList5,
+  promptList6
 }

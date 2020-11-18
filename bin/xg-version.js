@@ -5,7 +5,7 @@ require('../lib/change.js')
 // const promptList = require('./option').promptList
 // const promptList2 = require('./option').promptList2
 // const promptList3 = require('./option').promptList3
-const {promptList,promptList2,promptList3,promptList4,promptList5} = require('./option')
+const {promptList,promptList2,promptList3,promptList4,promptList5,promptList6} = require('./option')
 const FS = require('fs');
 const commander = require('commander')
 const inquirer = require('inquirer');
@@ -100,14 +100,14 @@ let gitOpreat = async function(){
     await git('git add .')
     await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
     await git(`git checkout ${global.releaseName}`)
-      .then(res=>{
-      console.log('git回调函数函数')
-        console.log(res)
-    })
-      .catch(err=>{
-        console.log('err回调函数函数')
-        console.log(err)
-      })
+    //   .then(res=>{
+    //   console.log('git回调函数函数')
+    //     console.log(res)
+    // })
+    //   .catch(err=>{
+    //     console.log('err回调函数函数')
+    //     console.log(err)
+    //   })
     //   .catch((err)=>{
     //   console.log('这是git回调的err')
     //   console.log(err)
@@ -132,12 +132,21 @@ function git(code){
      console.error('\x1B[31m%s\x1B[0m',stderr)
       resolve(stdout)
      if (stderr){
-       console.log('errrrrrr')
+       checkError()
        reject(stderr)
      }
     })
   })
   )
+}
+
+function checkError(){
+  inquirer
+    .prompt(promptList6)
+    .then(answer => {
+      if (answer.error = 0 ){return true}
+      else { process.exit(1)}
+    } )
 }
 
 //获取release分支名称

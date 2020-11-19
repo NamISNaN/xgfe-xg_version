@@ -64,12 +64,13 @@ function switchSrc(type) {
 }
 
 //输入版本号函数
-function inputVersion() {
+let inputVersion = async function(){
+// async function inputVersion() {
   inquirer
     .prompt(promptList3)
     .then(answer => {
       global.version = answer
-      changeVersion(global.version)
+       changeVersion(global.version)
         .then((res)=>{
         console.log('将路径'+this.src+'下的版本号修改：' + global.version.version+'，准备执行封板操作')
         gitOpreat()
@@ -171,62 +172,66 @@ function inputRelease() {
     } )
 }
 
-const changeVersion = async function(ver) {
-  try {
-    await FS.readdir(this.src, function (err, files) {
-      if (err) return err
-      if (files.length != 0) {
-        files.forEach((item) => {
-          let path = this.src + '/' + item
-          FS.stat(path, async function (err, status) {
-            if (err) return err
-            let isFile = status.isFile()
-            let isDir = status.isDirectory()
-            if (isFile && versionName.indexOf(item) != -1) {
-              switch (versionName.indexOf(item)) {
-                //修改package.json
-                case 0:
-                  let file1 = FS.readFileSync(path, 'utf-8')
-                  let file1_json = JSON.parse(file1)
-                  if (ver.version.split('.').length > 3) {
-                    var verSplice = ver.version.split('.')
-                    verSplice.pop()
-                    verSplice = verSplice.join('.')
-                    replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + verSplice + '"')
-                    break;
-                  }
-                  //执行替换操作
-                  replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + ver.version + '"')
-                  break;
-                //修改 sonar-project.properties
-                case 1:
-                  propertiesPaser(path, ver, getProperValue).then(res => {
-                  })
-                  break;
-                //修改 src/app/main.js
-                case 2:
-                  break;
+const changeVersion =  function(ver) {
+  return new Promise((resolve => {
+    let files = FS.readdirSync(this.src)
+    if (files.length != 0) {
+      files.forEach((item) => {
+        let path = this.src + '/' + item
+        let status= FS.statSync(path)
+        // if (err) return err
+        let isFile = status.isFile()
+        let isDir = status.isDirectory()
+        if (isFile && versionName.indexOf(item) != -1) {
+          switch (versionName.indexOf(item)) {
+            //修改package.json
+            case 0:
+              let file1 = FS.readFileSync(path, 'utf-8')
+              let file1_json = JSON.parse(file1)
+              if (ver.version.split('.').length > 3) {
+                var verSplice = ver.version.split('.')
+                verSplice.pop()
+                verSplice = verSplice.join('.')
+                replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + verSplice + '"')
+                break;
               }
-            }
-            if (isDir && item == versionName[2].split('/')[0]) {
-              // //修改src目录下文件
-              path = path.substring(0, path.length - 3) + versionName[2]
-              jsPaser(path, ver, mainCallBack)
-              // changeProper(path,ver,)
-              // replaceFile(path+'/','"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
+              //执行替换操作
+              replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + ver.version + '"')
+              break;
+            //修改 sonar-project.properties
+            case 1:
+              propertiesPaser(path, ver, getProperValue).then(res => {
+              })
+              break;
+            //修改 src/app/main.js
+            case 2:
+              break;
+          }
+        }
+        if (isDir && item == versionName[2].split('/')[0]) {
+          // //修改src目录下文件
+          path = path.substring(0, path.length - 3) + versionName[2]
+          jsPaser(path, ver, mainCallBack)
+          // changeProper(path,ver,)
+          // replaceFile(path+'/','"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
 
-              // 执行文件夹修改操作
-              // switch ( .indexOf(item)) {
-              //
-              // }
-            }
-          })
-        })
-      }
-    })
-  }catch (e) {
-    console.log(e)
-  }
+          // 执行文件夹修改操作
+          // switch ( .indexOf(item)) {
+          //
+          // }
+        }
+        // FS.stat(path, async function (err, status) {
+        // })
+      })
+      resolve()
+    }
+
+    //  FS.readdir(this.src, function (err, files) {
+    //   if (err) return err
+    // })
+
+
+  }))
 }
 
 //替换函数

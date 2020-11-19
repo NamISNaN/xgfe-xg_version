@@ -9,13 +9,13 @@ let toGB2312 = function(str) {
   return unescape(str.replace(/\\u/gi, '%u'));
 }
 // js文件解析
-let jsProps = async function(url,ver,callback) {
+let jsProps = function(url,ver,callback) {
   let fRead = fs.createReadStream(url),
     readlineObj = readline.createInterface({
       input: fRead
     });
 
-  await readlineObj.on('line', (line) => {
+    readlineObj.on('line', (line) => {
     // console.log('开始解析line')
     // console.log(line)
     var tmp = line.toString(),
@@ -36,7 +36,7 @@ let jsProps = async function(url,ver,callback) {
   })
   // 文件读取结束
   readlineObj.on('close', () => {
-    callback(url,ver,version)
+    callback(null, url,ver,version)
   })
 }
 

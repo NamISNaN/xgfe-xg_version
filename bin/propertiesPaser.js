@@ -8,13 +8,13 @@ let toGB2312 = function(str) {
   return unescape(str.replace(/\\u/gi, '%u'));
 }
 // properties文件解析
-let parseProps = async function(url,ver,callback) {
+let parseProps = function(url,ver,callback) {
   let fRead = fs.createReadStream(url),
     readlineObj = readline.createInterface({
       input: fRead
     });
 
-  await readlineObj.on('line', (line) => {
+  readlineObj.on('line', (line) => {
     var tmp = line.toString(),
       index = tmp.indexOf('#');
     // 拆分key、value
@@ -34,7 +34,7 @@ let parseProps = async function(url,ver,callback) {
   // 文件读取结束
     readlineObj.on('close', () => {
      // return key2value['sonar.projectVersion']
-      callback(url,ver,key2value)
+      callback(null, url,ver,key2value)
       // global.proper = 'key2value'
    })
 }

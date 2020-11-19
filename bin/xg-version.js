@@ -174,6 +174,18 @@ function inputRelease() {
 
 const changeVersion =  function(ver) {
   return new Promise((resolve => {
+    let n = 0;
+
+    const callbackPass = () => n++
+
+    const callbackInvoke = () => {
+      n--
+
+      if (n <= 0) {
+        resolve();
+      }
+    }
+
     let files = FS.readdirSync(this.src)
     if (files.length != 0) {
      files.forEach((item) => {
@@ -192,15 +204,24 @@ const changeVersion =  function(ver) {
                 var verSplice = ver.version.split('.')
                 verSplice.pop()
                 verSplice = verSplice.join('.')
-                replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + verSplice + '"')
+                callbackPass();
+                replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + verSplice + '"', callbackInvoke)
                 break;
               }
               //执行替换操作
-              replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + ver.version + '"')
+              callbackPass()
+              replaceFile(path, '"version": "' + file1_json.version + '"', '"version": "' + ver.version + '"', callbackInvoke)
               break;
             //修改 sonar-project.properties
             case 1:
-              propertiesPaser(path, ver, getProperValue)
+              callbackPass()
+              propertiesPaser(path, ver, (err, ...args) => {
+                if (err == null) {
+                  getProperValue(...args, callbackInvoke)
+                } else {
+                  throw err
+                }
+              })
               break;
             //修改 src/app/main.js
             case 2:
@@ -210,7 +231,15 @@ const changeVersion =  function(ver) {
         if (isDir && item == versionName[2].split('/')[0]) {
           // //修改src目录下文件
           path = path.substring(0, path.length - 3) + versionName[2]
-          jsPaser(path, ver, mainCallBack)
+
+          callbackPass()
+          jsPaser(path, ver, (err, ...args) => {
+            if (err == null) {
+              mainCallBack(...args, callbackInvoke)
+            } else  {
+              throw err
+            }
+          })
           // changeProper(path,ver,)
           // replaceFile(path+'/','"version": "'+file1_json.version+'"','"version": "'+ver.version+'"')
 
@@ -222,7 +251,7 @@ const changeVersion =  function(ver) {
         // FS.stat(path, async function (err, status) {
         // })
       })
-      resolve()
+
     }
 
     //  FS.readdir(this.src, function (err, files) {
@@ -234,7 +263,7 @@ const changeVersion =  function(ver) {
 }
 
 //替换函数
-let replaceFile = function(filePath,sourceRegx,targetStr) {
+let replaceFile = function(filePath,sourceRegx,targetStr, callback) {
   FS.readFile(filePath, function (err, data) {
     if (err) {
       return err;
@@ -243,13 +272,17 @@ let replaceFile = function(filePath,sourceRegx,targetStr) {
     str = str.replace(sourceRegx, targetStr);
 
     FS.writeFile(filePath, str, function (err) {
-      if (err) return err;
+      if (err) {
+        callback(err)
+      } else {
+        callback(null)
+      }
     });
   });
 }
 
 //修改 properties和main.js  版本号需要特殊处理
-let changeProper = function(path,ver,value) {
+let changeProper = function(path,ver,value, callback) {
   // if(ver.split('.').length<4){
 
   // }
@@ -257,21 +290,21 @@ let changeProper = function(path,ver,value) {
   let   temp = ver.version.split('.').length < 4 ?  'v' + ver.version + '.0' :  'v' + ver.version
   // let temp = 'v' + ver.version + '.0'
   // ver.version = 'v' + ver.version + '.0'
-  replaceFile(path,value,temp)
+  replaceFile(path,value,temp, callback)
 }
 
 
 //解析proper
-let getProperValue = function (path,ver,res) {
+let getProperValue = function (path,ver,res, callback) {
   if (res['sonar.projectVersion'] != undefined){
     specialVersion = res['sonar.projectVersion']
-    changeProper(path,ver,res['sonar.projectVersion'])
+    changeProper(path,ver,res['sonar.projectVersion'], callback)
   }
   // return res['sonar.projectVersion']
 }
 
 //解析main.js的回调函数
-let mainCallBack = function (path,ver,res) {
-  changeProper(path,ver,res)
+let mainCallBack = function (path,ver,res, callback) {
+  changeProper(path,ver,res, callback)
 }
 

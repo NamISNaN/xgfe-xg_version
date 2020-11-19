@@ -1,6 +1,6 @@
 {
   "name": "xgfe-admin",
-  "version": "6.6.3",
+  "version": "1.2.3",
   "private": true,
   "description": "驼峰业务管理后台",
   "main": "src/index.html",

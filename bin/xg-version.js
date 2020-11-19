@@ -66,7 +66,7 @@ function switchSrc(type) {
 //输入版本号函数
 let inputVersion = async function(){
 // async function inputVersion() {
-  inquirer
+  await inquirer
     .prompt(promptList3)
     .then(answer => {
       global.version = answer
@@ -176,7 +176,7 @@ const changeVersion =  function(ver) {
   return new Promise((resolve => {
     let files = FS.readdirSync(this.src)
     if (files.length != 0) {
-      files.forEach((item) => {
+     files.forEach((item) => {
         let path = this.src + '/' + item
         let status= FS.statSync(path)
         // if (err) return err
@@ -200,8 +200,7 @@ const changeVersion =  function(ver) {
               break;
             //修改 sonar-project.properties
             case 1:
-              propertiesPaser(path, ver, getProperValue).then(res => {
-              })
+              propertiesPaser(path, ver, getProperValue)
               break;
             //修改 src/app/main.js
             case 2:

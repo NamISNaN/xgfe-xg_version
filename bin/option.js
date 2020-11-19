@@ -21,7 +21,7 @@ const promptList = [
 
 const promptList2 = [{
   type: 'input',
-  message: '请输入路径(如：/Users/zhangsan/Desktop/xg-version):',
+  message: '请输入路径(如：/Users/zhangsan/Desktop/xgfe-admin):',
   name: 'src',
   validate: function(val) {
     // if(val.match(/.*xgfe.*/g)) { // 校验路径

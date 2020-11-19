@@ -88,7 +88,7 @@ let gitOpreat = async function(){
     //本地没有release分支
     await git(`git fetch origin ${global.releaseName}:${global.releaseName}`)
     await git('git add .')
-    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
+    await git("git commit -m 'feat[TMS](TMS) 修改版本号'")
     await git('git checkout master')
     await git ('git pull origin master')
     await git(`git merge ${global.releaseName}`)
@@ -98,7 +98,7 @@ let gitOpreat = async function(){
   }else {
     // 本地有release分支
     await git('git add .')
-    await git("git commit -m 'feat[TMS](TMS) 封板前代码提交'")
+    await git("git commit -m 'feat[TMS](TMS) 修改版本号'")
     await git(`git checkout ${global.releaseName}`)
     //   .then(res=>{
     //   console.log('git回调函数函数')
@@ -148,7 +148,6 @@ async function checkError(){
  await  inquirer
     .prompt(promptList6)
     .then(answer => {
-      console.log(answer)
       ans = answer.error
       return answer.error
       // if (answer.error === 0 ){

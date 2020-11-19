@@ -79,7 +79,7 @@ const promptList5 = [{
 const promptList6 = [
   {
     type: 'list',
-    message: '似乎出现了一些问题，请查看上方日志以确定是否需要继续封板:',
+    message: '似乎出现了一些问题，请查看上方日志以确定是否需要继续发布:',
     name: 'error',
     choices: [
       {

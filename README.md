@@ -1,11 +1,10 @@
 # @xg-version
 
-## Injected Commands
+## 介绍
 
+### 注意
+### 一定确保线上已经有release-xxxx(上线日期) 分支才可以进行使用。
 
-## Usage
-
-### 注意，一定确保线上已经有release-xxxx(上线日期) 分支才可以进行使用。
 可以实现快速修改xgfe-wms 中的版本号 ，并自动执行封板操作。
 目前修改的位置如下
 
@@ -19,7 +18,7 @@
 ```
 
 
-使用方法：
+### 使用方法：
 
 ```js
 mnpm install xg-version  
@@ -32,7 +31,8 @@ xg-version
 /// Users/chenlei/Desktop/code/work/xgfe-wms 【要求为xgfe-wms的路径地址】
 ```
 
-异常处理：
-版本号修改并不会出现异常 除非
+### 异常处理：
+1.版本号未修改 ： 请确认执行目录，建议安装mnpm后 直接在项目根路径运行即可。
+2.git操作失败 ： git操作每一步都会对回调进行检测，当出现异常时会暂停提交，请查看日志以确定是否需要继续提交。 
 
 

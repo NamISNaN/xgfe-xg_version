@@ -57,7 +57,7 @@ function switchSrc(type) {
         inputRelease()
       })
   } else {
-    // 调试时候暂时注视下面两行
+    // 调试时候暂时注释下面两行
     this.src = process.cwd().split('/hybrid')[0]
     inputRelease()
   }

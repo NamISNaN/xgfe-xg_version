@@ -73,7 +73,13 @@ const promptList4 = [
 const promptList5 = [{
   type: 'input',
   message: '请输入release分支名称（如：release-1117）:',
-  name: 'releaseBranch'
+  name: 'releaseBranch',
+  validate: function(val) {
+  if(val.length!=0){
+    return true
+  }
+    return "release分支名不能为空～";
+  }
 }]
 
 const promptList6 = [

@@ -177,10 +177,8 @@ const changeVersion =  function(ver) {
     let n = 0;
 
     const callbackPass = () => n++
-
     const callbackInvoke = () => {
       n--
-
       if (n <= 0) {
         resolve();
       }
